@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "21860561742",
+    "project_id": "overbooked-15403",
+    "storage_bucket": "overbooked-15403.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21860561742:android:6901e2ecae2471a4e5241f",
+        "android_client_info": {
+          "package_name": "com.hamzaamjd.overbooked"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21860561742-3ebbibgih9a75ce33llgf2g07chduj0b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hamzaamjd.overbooked",
+            "certificate_hash": "3e86f5bed4ae2b0a520f00933a5178466065664b"
+          }
+        },
+        {
+          "client_id": "21860561742-noeidijnne7jpffh3jsti8vuedjmvs9q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIEzN31YRJTRmc2YeiK8px2sW0ourOdPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21860561742-noeidijnne7jpffh3jsti8vuedjmvs9q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
