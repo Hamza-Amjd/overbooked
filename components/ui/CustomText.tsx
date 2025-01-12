@@ -4,12 +4,13 @@ import { RFValue } from 'react-native-responsive-fontsize'
 
 interface Props {
     variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-    style?: TextStyle | TextStyle[]
+    style?: TextStyle | TextStyle[],
+    fontFamily?:'SpaceMono'|'Bold'|'Medium'| 'Regular'
     children: React.ReactNode
     numberOfLines?: any
 }
 
-const CustomText: FC<Props> = ({ variant, style, children, numberOfLines }) => {
+const CustomText: FC<Props> = ({ variant,fontFamily='Regular', style, children, numberOfLines }) => {
 
     let computedFontSize = RFValue(12)
 
@@ -41,6 +42,7 @@ const CustomText: FC<Props> = ({ variant, style, children, numberOfLines }) => {
         <Text
             style={{
                 fontSize: computedFontSize,
+                fontFamily:fontFamily,
                 ...styles.text,
                 ...style,
             }}

@@ -65,7 +65,7 @@ export default function onboarding() {
   };
 
   const endOnboarding = async () => {
-    // await AsyncStorage.setItem("isFirstStart", "false");
+    await AsyncStorage.setItem("isFirstStart", "false");
     router.replace("/(auth)");
   };
 

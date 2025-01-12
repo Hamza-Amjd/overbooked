@@ -15,10 +15,11 @@ import AuthTextInput from "@/components/auth/AuthTextInput";
 import CustomButton from "@/components/ui/CustomButton";
 import Header from "@/components/ui/Header";
 import CustomText from "@/components/ui/CustomText";
+import { signUpWithCredentials } from "@/services/api/authService";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("Please enter your firstname"),
-  lastName: Yup.string().required("Please enter your lastname"),
+  first_name: Yup.string().required("Please enter your first name"),
+  last_name: Yup.string().required("Please enter your last_name"),
   username: Yup.string().required("Please enter a unique username"),
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
@@ -34,12 +35,6 @@ export default function RegisterationScreen() {
   const [loading, setLoading] = useState(false);
   const [obsecurePass, setobsecurePass] = useState(true);
   const [obsecureCpass, setobsecureCpass] = useState(true);
-  const [pendingVerification, setPendingVerification] = useState(false);
-
-
-  const handleRegister = async (values: any) => {
-  
- };
 
 
   return (
@@ -60,15 +55,15 @@ export default function RegisterationScreen() {
       
     <Formik
         initialValues={{
-          firstName: "",
-          lastName: "",
+          first_name: "",
+          last_name: "",
           username: "",
           email: "",
           password: "",
           confirmPassword: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleRegister(values)}
+        onSubmit={(values) => signUpWithCredentials(values)}
       >
         {({
           handleChange,
@@ -81,10 +76,10 @@ export default function RegisterationScreen() {
         }) => (
           <View style={{ paddingHorizontal: 20 }}>
             <View style={{flexDirection:"row",width:'100%',gap:5}}>
-              <AuthTextInput handleChange={handleChange} iconName={'account'} setFieldTouched={setFieldTouched} title="firstName" touched={touched.firstName} value={values.firstName} isPassword={false}  error={errors.firstName} autoCapitalize={"words"} placeholder="Enter firstname" style={{flex:1}}/>
-              <AuthTextInput handleChange={handleChange} setFieldTouched={setFieldTouched} title="lastName" touched={touched.lastName} value={values.lastName} isPassword={false}  error={errors.lastName} autoCapitalize={"words"} placeholder="Enter lastname" style={{flex:1}}/>
+              <AuthTextInput handleChange={handleChange} iconName={'account'} setFieldTouched={setFieldTouched} title="first_name" touched={touched.first_name} value={values.first_name} isPassword={false}  error={errors.first_name} autoCapitalize={"words"} placeholder="Enter first name" style={{flex:1}}/>
+              <AuthTextInput handleChange={handleChange} setFieldTouched={setFieldTouched} title="last_name" touched={touched.last_name} value={values.last_name} isPassword={false}  error={errors.last_name} autoCapitalize={"words"} placeholder="Enter last name" style={{flex:1}}/>
             </View>
-            <AuthTextInput handleChange={handleChange} iconName={'account'} setFieldTouched={setFieldTouched} title="username" touched={touched.username} value={values.username} isPassword={false}  error={errors.username} autoCapitalize={"words"} placeholder="Enter unique username"/>
+            <AuthTextInput handleChange={handleChange} iconName={'account'} setFieldTouched={setFieldTouched} title="username" touched={touched.username} value={values.username} isPassword={false}  error={errors.username} autoCapitalize={"words"} placeholder="Enter a valid username"/>
             <AuthTextInput handleChange={handleChange} iconName={'email'} setFieldTouched={setFieldTouched} title="email" touched={touched.email} value={values.email} isPassword={false} error={errors.email}/>
             <AuthTextInput handleChange={handleChange} iconName={'form-textbox-password'} setFieldTouched={setFieldTouched} title="password" touched={touched.password} value={values.password} isPassword={true} obsecurePass={obsecurePass} setobsecurePass={setobsecurePass} error={errors.password}/>
             <AuthTextInput handleChange={handleChange} iconName={'form-textbox-password'} setFieldTouched={setFieldTouched} title="confirmPassword" touched={touched.confirmPassword} value={values.confirmPassword} isPassword={true} obsecurePass={obsecureCpass} setobsecurePass={setobsecureCpass} error={errors.confirmPassword} placeholder="Confirm password"/>

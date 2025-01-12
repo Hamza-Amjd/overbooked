@@ -1,6 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
+import { useAuthStore } from '@/services/authStore'
 
 const books = [
   { id: '1', title: 'Book One', author: 'Author One', image: 'https://example.com/book1.jpg' },

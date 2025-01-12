@@ -18,7 +18,7 @@ import CustomButton from "@/components/ui/CustomButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomText from "@/components/ui/CustomText";
 import Header from "@/components/ui/Header";
-import { signInWithGoogle } from "@/services/api/authService";
+import { signInWithCredentials, signInWithGoogle } from "@/services/api/authService";
 import { StatusBar } from "expo-status-bar";
 
 const validationSchema = Yup.object().shape({
@@ -32,54 +32,11 @@ const validationSchema = Yup.object().shape({
 export default function index() {
   const [isLoading, setIsLoading] = useState(false);
   const [obsecurePass, setobsecurePass] = useState(true);
-  
-
-  useEffect(() => {
-    const checkFirstStart = async () => {
-    try {
-      const isFirstStart = await AsyncStorage.getItem('isFirstStart');
-      if (isFirstStart === null) {
-        // First time opening app
-        await AsyncStorage.setItem('isFirstStart', 'false');
-        router.replace('/onboarding');
-      }
-    } catch (error) {
-      console.error('Error checking first start:', error);
-    }
-  };
-  checkFirstStart();
-  }, []);
-
-  const handleLogin =async (values: any) => {
-    try {
-      const response = await fetch('http://192.168.0.109:5000/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        console.log(data)
-      } else {
-        Alert.alert("Login failed","Please try again")
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      Alert.alert("Login failed","Please try again")
-    }
-    // router.replace('/(tabs)')
-  };
-
 
   return (
     <ImageBackground source={require('@/assets/images/onboarding/background.png')} style={{flex:1}}>
       <StatusBar translucent backgroundColor="transparent"/>
       <View style={styles.container}>
-      <Header onBackPress={() => router.replace("/(tabs)")} color="#fff"/>
       <View style={styles.info}>
         <View style={styles.logoRow}>
           <Image
@@ -93,7 +50,7 @@ export default function index() {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleLogin(values)}
+        onSubmit={(values) => signInWithCredentials(values)}
         style={{ alignItems: "center", justifyContent: "center" }}
       >
         {({
@@ -175,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 50,
-    marginTop: 70,
+    marginTop: 110,
   },
   logoRow: {
     flexDirection: "row",

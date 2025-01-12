@@ -1,6 +1,10 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import axios from "axios";
 import { router } from "expo-router";
-import React from "react";
+import { BASE_URL } from "../config";
+import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuthStore } from "../authStore";
 
 GoogleSignin.configure({
     webClientId:"21860561742-noeidijnne7jpffh3jsti8vuedjmvs9q.apps.googleusercontent.com",
@@ -15,32 +19,51 @@ GoogleSignin.configure({
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signOut();
       const res = await GoogleSignin.signIn();
-      console.log(res);
-      // const apiRes = await axios.post(`${BASE_URL}/oauth/login`, {
-      //   id_token: res.data?.idToken,
-      // });
-      // setUser(user);
-      // router.replace("/(tabs)");
+      const apiRes = await axios.post(`${BASE_URL}/api/oauth/login`, {
+        id_token: res.data?.idToken,
+      });
+      const { access_token, user } = apiRes.data;
+      await AsyncStorage.setItem("accessToken", access_token);
+      const { setUser } = useAuthStore.getState();
+      setUser(user);
+      router.replace("/(tabs)");
     } catch (error: any) {
-      console.log(error.response.status);
-      if (error.response.status == 400) {
-        router.push("/(auth)/register");
-      }
+      console.log(error.response.data);
     }
   }
-  
-export const signUpWithGoogle = async (data: any) => {
+
+  export const signInWithCredentials =async (values:any) => {
     try {
-      await GoogleSignin.hasPlayServices();
-      await GoogleSignin.signOut();
-      const res = await GoogleSignin.signIn();
-    //   const apiRes = await axios.post(`${BASE_URL}/oauth/login`, {
-    //     id_token: res.data?.idToken,
-    //     ...data,
-    //   });
-    //   const { tokens, user } = apiRes.data;
-      router.push("/(tabs)");
-    } catch (error: any) {
-      console.log("SignUP Error", error.response.status);
+      const res=await axios.post(`${BASE_URL}/api/auth/signin`,{email:values.email,password:values.password})
+      if (res.status === 200) {
+        const { access_token, user } = res.data;
+        await AsyncStorage.setItem("accessToken", access_token);
+        const { setUser } = useAuthStore.getState();
+        setUser(user);
+        router.replace('/(tabs)');
+      } else {
+        Alert.alert("Login failed","Please try again")
+      }
+    } catch (error) {
+      console.log("Login error:", error);
+      Alert.alert("Login failed","Please try again")
+    }
+  };
+
+  export const signUpWithCredentials =async (values:any) => {
+    try {
+      const res=await axios.post(`${BASE_URL}/api/auth/signup`,values);
+      if (res.status === 201) {
+        const { access_token, user } = res.data;
+        await AsyncStorage.setItem("accessToken", access_token);
+        const { setUser } = useAuthStore.getState();
+        setUser(user);
+        router.replace('/(tabs)');
+      } else {
+        Alert.alert("Login failed","Please try again")
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      Alert.alert("Login failed","Please try again")
     }
   };
