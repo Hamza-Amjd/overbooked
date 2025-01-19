@@ -6,7 +6,10 @@ const _layout = () => {
     <Stack screenOptions={{headerShown: false}}>
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="notifications" />
-        <Stack.Screen name="bookmarks" />
+        <Stack.Screen name="wishlist" />
+        <Stack.Screen name="mybooks" />
+        <Stack.Screen name="readbook" />
+        <Stack.Screen name="bookdetails" />
       </Stack>
   )
 }

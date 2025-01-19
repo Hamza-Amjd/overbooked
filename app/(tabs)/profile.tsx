@@ -16,10 +16,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import { useBookStore } from "@/services/bookStore";
+import useWishListStore from "@/services/wishlistStore";
+import { useNotificationStore } from "@/services/notificationStore";
 
 const profile = () => {
   const { user, logout } = useAuthStore();
   const { clearBooks } = useBookStore();
+  const { clearWishlist } = useWishListStore();
+  const { clearNotifications } = useNotificationStore();
 
   const handleLogout = () => {
     Alert.alert(
@@ -32,6 +36,8 @@ const profile = () => {
         },
         { text: "OK", onPress: () => {
           clearBooks();
+          clearWishlist();
+          clearNotifications();
           AsyncStorage.removeItem("accessToken");
           logout();
           router.replace("/(auth)");
@@ -43,8 +49,8 @@ const profile = () => {
 
   const menu = [
     {
-      name: "Bookmarks",
-      action: () => router.push("/(screens)/bookmarks"),
+      name: "Wishlist",
+      action: () => router.push("/(screens)/wishlist"),
       icon: "bookmark",
     },
     {

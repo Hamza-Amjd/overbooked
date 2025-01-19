@@ -12,3 +12,14 @@ export const fetchAllBooks =async () => {
       console.log("fetching books error:", error);
     }
   };
+
+  export const fetchMyBooks =async (userId:any) => {
+    try {
+      const res=await axios.get(`${BASE_URL}/library/issued-books/${userId}`)
+      const {setMyBooks}=useBookStore.getState();
+      setMyBooks(res.data)
+      return res.data;
+    } catch (error) {
+      console.log("fetching books error:", error);
+    }
+  };

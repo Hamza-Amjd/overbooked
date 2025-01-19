@@ -25,26 +25,26 @@ const MyBookCard = ({item,style}:any) => {
   }, [progress])
 
   const handlePress = () => {
-    router.navigate({pathname:'/(screens)/readbook',params:item})
+    router.navigate({pathname:'/(screens)/readbook',params:item.bookDetails})
   }
   return (
     <TouchableOpacity onPress={handlePress} style={[styles.cardContainer,style]}>
       <View style={{flexDirection:'row'}}> 
-      <Image source={{ uri: item.cover }} style={styles.bookImage} />
+      <Image source={{ uri: item.bookDetails.cover }} style={styles.bookImage} />
       <View style={{paddingLeft:15}}>
       <CustomText fontFamily="Medium" variant="h5">{item.bookName}</CustomText>
       <CustomText  variant="h6">
-        Author : {item.author}
+        Author : {item.bookDetails.author}
       </CustomText>
       <CustomText variant="h6">
-        {item.category}
+        {item.bookDetails.category}
       </CustomText>
       <CustomText >
         Current Page: {item.page?item.page:1}
       </CustomText>
         <View style={styles.ratingContainer}>
           <AntDesign name="star" color={Colors.primary} size={RFValue(20)} />
-          <CustomText fontFamily="Medium" variant="h6">{parseInt(item.rating).toFixed(1)}</CustomText>
+          <CustomText fontFamily="Medium" variant="h6">{parseInt(item.bookDetails.rating).toFixed(1)}</CustomText>
         </View>
       </View>
       </View>

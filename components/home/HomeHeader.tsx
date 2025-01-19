@@ -1,14 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { Feather, FontAwesome6 } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import CustomText from "../ui/CustomText";
+import { useAuthStore } from "@/services/authStore";
 
 const HomeHeader = () => {
+  const {user}=useAuthStore()
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
-        <FontAwesome6 name="bars-staggered" size={RFValue(20)} />
+      <TouchableOpacity onPress={()=>router.push('/(screens)/mybooks')} >
+      <Feather name="book-open" size={RFValue(20)}  color="black" />
       </TouchableOpacity>
       <TouchableOpacity onPress={()=>router.push('/(screens)/notifications')}>
         <Feather name="bell" size={RFValue(22)} />

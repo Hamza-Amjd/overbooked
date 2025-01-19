@@ -10,12 +10,13 @@ import { BASE_URL } from "@/services/config";
 const bookdetails = () => {
   const route = useRoute();
   const {addToMyBooks,updateMybookProgress}=useBookStore()
-  const item:any = route.params;  
+  const item:any = route.params;
+  console.log(item)  
   
   return (
     <CustomSafeAreaView style={{flex:1}}>
       <Pdf
-        source={{uri:`${BASE_URL+item?.pdf}`,cache:true}}
+        source={{uri:`${BASE_URL+item.pdf}`,cache:true}}
         trustAllCerts={false}
         page={item.page?parseInt(item.page):0}
         onLoadComplete={(numberOfPages, filePath) => {

@@ -12,14 +12,16 @@ import { useBookStore } from '@/services/bookStore';
 import { AntDesign } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { Colors } from '@/constants/Colors';
+import { useAuthStore } from '@/services/authStore';
+import { BASE_URL } from '@/services/config';
 
 const bookdetails = () => {
   const route=useRoute()
   const item:any=route.params;
-  const {addToMyBooks,myBooks}=useBookStore()
+  const {myBooks}=useBookStore()
+  const {user}=useAuthStore()
   const isMyBook=myBooks.some((book)=>book._id== item._id);
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity of 0
-
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1, // Fade in to full opacity
@@ -29,14 +31,36 @@ const bookdetails = () => {
   }, [fadeAnim]);
 
   const handleRequestBook=async()=>{
-    Alert.alert(
+      try {
+        const response = await fetch(`${BASE_URL}/library/requestBook/${item._id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userID: user?.id
+          })
+        });
+  
+        const data = await response.json();
+        if (!response.ok) {
+          console.log(data.error || 'Failed to request book');
+          Alert.alert(
+            'Already Requested',
+            'Please wait till your request is proceed',
+            [{text: 'OK'}]
+          )
+        }else{
+          Alert.alert(
       'Book Requested',
       'Please wait till your request is proceed',
       [{text: 'OK'}]
     )
-    setTimeout(() => {
-      addToMyBooks(item)
-    }, 5000);
+        }
+        
+      } catch (error) {
+        console.error('Error requesting book:', error);
+      }
   }
   return (
     <View style={{flex:1}}>

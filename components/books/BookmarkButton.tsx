@@ -1,11 +1,11 @@
 import { View, Text, TouchableOpacity,StyleSheet } from 'react-native'
 import React from 'react'
-import useCartStore from '@/services/cartStore'
 import { Ionicons } from '@expo/vector-icons'
 import { Colors } from '@/constants/Colors'
+import useWishListStore from '@/services/wishlistStore'
 
 const BookmarkButton = ({item,size,color="#000"}:any) => {
-  const {wishlist,toggleWishlist}=useCartStore()
+  const {wishlist,toggleWishlist}=useWishListStore()
 
   return (
     <TouchableOpacity style={styles.bookmarkBtn} onPress={()=>toggleWishlist(item)}>

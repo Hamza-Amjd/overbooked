@@ -1,17 +1,28 @@
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
-  Animated,
   StatusBar,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useBookStore } from "@/services/bookStore";
+import { FlatList } from "react-native";
+import SearchTile from "@/components/ui/SearchTile";
 
 const explore = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [searchData, setSearchData] = useState<any>([]);
+  const { books } = useBookStore();  
+
+  useEffect(() => {
+    // Filter myBooks based on searchValue
+    if(searchValue.length==0){setSearchData([])}else{const filteredBooks = books.filter(book => 
+      book.bookName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setSearchData(filteredBooks);}
+  }, [searchValue]); 
 
   return (
     <View style={styles.container}>
@@ -26,6 +37,13 @@ const explore = () => {
           <Ionicons name="search" size={RFValue(20)} color={"grey"} />
         </View>
       </View>
+      <FlatList
+        data={searchData}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => <SearchTile item={item} />}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={{}}
+      />
     </View>
   );
 };

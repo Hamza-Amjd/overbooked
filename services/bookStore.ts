@@ -6,6 +6,7 @@ interface bookState {
   books: Record<string, any>[]; // Array of book
   myBooks: Record<string, any>[]; // Array of book
   setBooks:(books: any) => void;
+  setMyBooks : (books: any) => void; // Method to set the myBooks list 
   addBook: (book: any) => void; // Method to add a book
   addToMyBooks: (book: any) => void; // Method to add a book to the myBooks list
   removeFromMyBooks: (book: any) => void; // Method to remove a book from the myBooks list
@@ -19,6 +20,7 @@ export const useBookStore = create<bookState>()(
       books: [], // Initialize with an empty array
       myBooks:[],
       setBooks : (data:any) => set({ books: data }),
+      setMyBooks : (data:any) => set({ myBooks: data }),
       addBook: (book: any) => set((state) => ({ books: [...state.books, book] })), // Add a book to the list
       addToMyBooks: (book: any) => set((state) => {
         if (!state.myBooks.some((b: any) => b._id === book._id)) {

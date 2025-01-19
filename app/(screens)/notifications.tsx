@@ -5,11 +5,14 @@ import CustomText from "@/components/ui/CustomText";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import { fetchUserNotifications } from "@/services/api/notificationService";
+import { useAuthStore } from "@/services/authStore";
 
 const Page = () => {
   const [notifications, setNotifications] = useState();
+  const {user}=useAuthStore()
+
   useEffect(() => {
-    fetchUserNotifications()
+    fetchUserNotifications(user?.id)
   }, [])
   
   return (
