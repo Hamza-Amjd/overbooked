@@ -3,13 +3,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableOpacityProps,
   View,
 } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
-type customButtonProps = {
+type customButtonProps = TouchableOpacityProps & {
   onPress: () => void;
   isValid?: boolean;
   isLoading?: boolean;
@@ -24,7 +25,8 @@ const CustomButton = ({
   isLoading,
   title,
   icon,
-  height
+  height,
+  ...rest
 }: customButtonProps) => {
   return (
     <TouchableOpacity
@@ -35,6 +37,7 @@ const CustomButton = ({
         isValid && { backgroundColor: Colors.primary },
         { height: height?height:45 },
       ]}
+      {...rest}
     >
       {icon?<Ionicons name={icon } size={20} color={'#fff'}/>:null}
       <Text
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection:'row',
-    gap:5,
+    gap:10,
     elevation:5
   },
 });

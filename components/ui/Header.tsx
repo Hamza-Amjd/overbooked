@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import CustomText from "./CustomText";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const Header = ({
   title,
@@ -27,9 +28,9 @@ const Header = ({
         {showBackButton && <TouchableOpacity
           onPress={onBackPress}
         >
-          <Ionicons name="arrow-back" size={30} color={color?color:Colors.text}/>
+          <Ionicons name="arrow-back" size={RFValue(25)} color={color?color:Colors.text}/>
         </TouchableOpacity>}
-        {title && <CustomText variant="h5" style={[styles.title,{color:color?color:Colors.text}]}>{title}</CustomText>}
+        {title && <CustomText fontFamily="Medium" variant="h4" style={[styles.title,{color:color?color:Colors.text}]}>{title}</CustomText>}
       </View>
       {headerRight && headerRight}
     </View>
@@ -48,9 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
-    lineHeight:28,
-    fontWeight: "bold",
+    lineHeight:22,
     textTransform:"capitalize"
   },
 });

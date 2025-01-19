@@ -56,7 +56,6 @@ const CustomText: FC<Props> = ({ variant,fontFamily='Regular', style, children, 
 const styles = StyleSheet.create({
     text: {
         color: '#000',
-        textAlign: 'center'
     }
 })
 

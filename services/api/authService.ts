@@ -19,11 +19,11 @@ GoogleSignin.configure({
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signOut();
       const res = await GoogleSignin.signIn();
-      const apiRes = await axios.post(`${BASE_URL}/api/oauth/login`, {
+      const apiRes = await axios.post(`${BASE_URL}/oauth/login`, {
         id_token: res.data?.idToken,
       });
       const { access_token, user } = apiRes.data;
-      await AsyncStorage.setItem("accessToken", access_token);
+      await AsyncStorage.setItem("accessToken", "true");
       const { setUser } = useAuthStore.getState();
       setUser(user);
       router.replace("/(tabs)");
@@ -34,10 +34,10 @@ GoogleSignin.configure({
 
   export const signInWithCredentials =async (values:any) => {
     try {
-      const res=await axios.post(`${BASE_URL}/api/auth/signin`,{email:values.email,password:values.password})
+      const res=await axios.post(`${BASE_URL}/login`,{email:values.email,password:values.password})
       if (res.status === 200) {
         const { access_token, user } = res.data;
-        await AsyncStorage.setItem("accessToken", access_token);
+        await AsyncStorage.setItem("accessToken", "user");
         const { setUser } = useAuthStore.getState();
         setUser(user);
         router.replace('/(tabs)');
@@ -52,10 +52,10 @@ GoogleSignin.configure({
 
   export const signUpWithCredentials =async (values:any) => {
     try {
-      const res=await axios.post(`${BASE_URL}/api/auth/signup`,values);
+      const res=await axios.post(`${BASE_URL}/register`,values);
       if (res.status === 201) {
         const { access_token, user } = res.data;
-        await AsyncStorage.setItem("accessToken", access_token);
+        await AsyncStorage.setItem("accessToken", "user");
         const { setUser } = useAuthStore.getState();
         setUser(user);
         router.replace('/(tabs)');

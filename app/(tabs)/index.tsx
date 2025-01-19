@@ -1,74 +1,124 @@
-import { SafeAreaView, StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
-import { useAuthStore } from '@/services/authStore'
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  FlatList,
+  StatusBar,
+  RefreshControl,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { fetchAllBooks } from "@/services/api/bookService";
+import { useBookStore } from "@/services/bookStore";
+import CustomText from "@/components/ui/CustomText";
+import HomeHeader from "@/components/home/HomeHeader";
+import BookCard from "@/components/home/BookCard";
+import Categories from "@/components/home/Categories";
+import MyBookCard from "@/components/home/MyBookCard";
+import CustomSafeAreaView from "@/components/ui/CustomSafeAreaView";
+import { screenWidth } from "@/constants/Sizes";
+import { Colors } from "@/constants/Colors";
+import MyBooksCarousel from "@/components/home/MyBooksCarousel";
 
-const books = [
-  { id: '1', title: 'Book One', author: 'Author One', image: 'https://example.com/book1.jpg' },
-  { id: '2', title: 'Book Two', author: 'Author Two', image: 'https://example.com/book2.jpg' },
-  // ... add more books as needed ...
-]
+const home = () => {
+  const ListRef = useRef<any>();
+  const { books, myBooks } = useBookStore();
+  const [data, setData] = useState(books);
+  const [newBooks, setNewBooks] = useState<any>([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))}).finally(() => setLoading(false));
+  }, []);
 
-const renderItem = ({ item }:any) => (
-  <TouchableOpacity style={styles.bookItem}>
-    <View style={styles.bookImage} >
-
-    <Ionicons name='book' size={80} />
-    </View>
-    <Text style={styles.bookTitle}>{item.title}</Text>
-    <Text style={styles.bookAuthor}>{item.author}</Text>
-  </TouchableOpacity>
-)
-
-const index = () => {
+  const handleCategoryChange = (category: any) => {
+    ListRef?.current?.scrollToOffset({
+      animated: true,
+      offset: 0,
+    });
+    if (category == "All") {
+      setData(books);
+    } else {
+      setData(books.filter((book) => book.category === category));
+    }
+  };
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={books}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.list}
+    <CustomSafeAreaView style={styles.container}>
+      <HomeHeader />
+      <ScrollView
+        style={{width: '100%'}}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchAllBooks} />
+        }
+      >
+        {<View style={styles.padding}>
+          <CustomText fontFamily="Bold" variant="h1" >
+            Welcome to OverBooked
+          </CustomText>
+          <CustomText fontFamily="Regular" variant="h6">
+            Discover and read books
+          </CustomText>
+        </View>}
+          {myBooks.length>0 &&<MyBooksCarousel/>}
+        <Categories onChange={handleCategoryChange} />
+        <FlatList
+          ref={ListRef}
+          data={data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <BookCard item={item} />}
+          keyExtractor={(item) => item._id}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              {loading ? (
+                <ActivityIndicator size={"large"} />
+              ) : (
+                <CustomText fontFamily="Medium" variant="h6">
+                  Nothing Found
+                </CustomText>
+              )}
+            </View>
+          )}
+          contentContainerStyle={styles.list}
+        />
+        
+        <CustomText fontFamily="Bold" variant="h1" style={styles.padding}>For You</CustomText>
+        <FlatList
+        scrollEnabled={false}
+        data={newBooks}
+        renderItem={({ item }) => <BookCard item={item} style={{marginHorizontal:15}}/>}
+        keyExtractor={(item) => item._id}
+        numColumns={2}
+        contentContainerStyle={styles.foryoulist}
       />
-    </SafeAreaView>
-  )
-}
-
-export default index
+      </ScrollView>
+    </CustomSafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#FAF3F0",
+    paddingBottom: 100,
   },
   list: {
-    paddingBottom: 20,
+    padding: 10,
+    gap: 10,
   },
-  bookItem: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 16,
-    marginVertical: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
+  padding: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
-  bookImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 8,
-    alignItems:'center',
-    justifyContent: 'center',
+  emptyContainer: {
+    height: 250,
+    alignItems: "center",
+    width: screenWidth,
+    justifyContent: "center",
   },
-  bookTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 8,
-  },
-  bookAuthor: {
-    fontSize: 14,
-    color: '#666',
-  },
-})
+  foryoulist:{justifyContent:'space-evenly',width:screenWidth,alignItems:'center'}
+});
+
+export default home;

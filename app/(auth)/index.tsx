@@ -5,9 +5,7 @@ import {
   View,
   TouchableOpacity,
   Image,
-  SafeAreaView,
   ImageBackground,
-  Alert,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Formik } from "formik";
@@ -15,9 +13,7 @@ import * as Yup from "yup";
 import { router} from "expo-router";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import CustomButton from "@/components/ui/CustomButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomText from "@/components/ui/CustomText";
-import Header from "@/components/ui/Header";
 import { signInWithCredentials, signInWithGoogle } from "@/services/api/authService";
 import { StatusBar } from "expo-status-bar";
 
@@ -90,7 +86,7 @@ export default function index() {
             <CustomButton
               isLoading={isLoading}
               isValid={isValid}
-              onPress={handleSubmit}
+              onPress={()=>handleSubmit()}
               title="S I G N   I N"
               height={50}
             />

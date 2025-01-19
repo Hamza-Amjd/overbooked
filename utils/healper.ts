@@ -1,0 +1,1 @@
+export const categoriesData = ['All','Fiction', 'Non-Fiction', 'Science', 'History', 'Romance', 'Mystery', 'Fantasy', 'Biography', 'Self-Help', 'Technology'];
