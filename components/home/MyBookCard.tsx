@@ -6,20 +6,25 @@ import CustomText from "../ui/CustomText";
 import { AntDesign } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import { screenWidth } from "@/constants/Sizes";
+import { useBookStore } from "@/services/bookStore";
 
 const width=screenWidth-52
 const MyBookCard = ({item,style}:any) => {
   const [progress, setProgress] = React.useState(0);
+  const [currPage, setCurrPage] = React.useState(0);
   const animatedWidth = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if(item.page && item.numberOfPages)setProgress((item.page/item.numberOfPages));
-  }, [item.page,item.numberOfPages]);
+  const {myBooksProgress}=useBookStore()
+  
+  useFocusEffect(() => {
+    const bookprogress=myBooksProgress.find((b: any) => b.id === item.bookName && b)
+    setCurrPage(bookprogress?.page?bookprogress.page:1)
+    if(bookprogress?.page && bookprogress?.numberOfPages)setProgress((bookprogress.page/bookprogress.numberOfPages));
+  })
 
   useEffect(() => {
     Animated.timing(animatedWidth, {
       toValue: width*progress,
-      duration: 300, 
+      duration: 600, 
       useNativeDriver: false,
     }).start();
   }, [progress])
@@ -39,8 +44,8 @@ const MyBookCard = ({item,style}:any) => {
       <CustomText variant="h6">
         {item.bookDetails.category}
       </CustomText>
-      <CustomText >
-        Current Page: {item.page?item.page:1}
+      <CustomText variant="h6">
+        Current page : {currPage}
       </CustomText>
         <View style={styles.ratingContainer}>
           <AntDesign name="star" color={Colors.primary} size={RFValue(20)} />

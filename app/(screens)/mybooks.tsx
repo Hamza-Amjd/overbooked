@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import Header from "@/components/ui/Header";
 import { useBookStore } from "@/services/bookStore";
 import MyBookCard from "@/components/home/MyBookCard";
@@ -11,13 +11,11 @@ import { fetchMyBooks } from "@/services/api/bookService";
 import { useAuthStore } from "@/services/authStore";
 
 const mybooks = () => {
+  const [refreshing, setRefreshing] = useState(false)
   const {user}=useAuthStore()
   const { myBooks } = useBookStore();
   useEffect(() => {
-    fetchMyBooks(user?.id)
-     .then((res) => {
-        console.log(myBooks);
-      })
+    fetchMyBooks()
   }, [])
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -28,9 +26,10 @@ const mybooks = () => {
         <FlatList
           data={myBooks}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <MyBookCard item={item} />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetchMyBooks()} />}
+          renderItem={({ item }) => <MyBookCard item={item} style={{backgroundColor:"#F5F5F5"}}/>}
           keyExtractor={(item) => item._id}
-          contentContainerStyle={{ padding: 10 }}
+          contentContainerStyle={{ padding: 10,rowGap: 5 }}
         />
       )}
     </SafeAreaView>

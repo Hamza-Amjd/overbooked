@@ -1,6 +1,8 @@
 import axios from "axios";
 import { BASE_URL} from "../config";
 import { useBookStore } from "../bookStore";
+import { useAuthStore } from "../authStore";
+const {user}=useAuthStore.getState();
 
 export const fetchAllBooks =async () => {
     try {
@@ -13,9 +15,9 @@ export const fetchAllBooks =async () => {
     }
   };
 
-  export const fetchMyBooks =async (userId:any) => {
+  export const fetchMyBooks =async () => {
     try {
-      const res=await axios.get(`${BASE_URL}/library/issued-books/${userId}`)
+      const res=await axios.get(`${BASE_URL}/library/issued-books/${user?._id}`)
       const {setMyBooks}=useBookStore.getState();
       setMyBooks(res.data)
       return res.data;

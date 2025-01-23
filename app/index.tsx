@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { router,Link } from 'expo-router'
 import { Colors } from '@/constants/Colors'
@@ -27,7 +27,7 @@ const index = () => {
      
   return (
     <View style={styles.container}>
-      <ActivityIndicator color={Colors.primary} size={"large"}/>
+      <Image source={require('@/assets/images/adaptive-icon.png')} style={{width:200,height:200}}/>
     </View>
   )
 }

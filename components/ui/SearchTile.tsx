@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 
 const SearchTile = ({ item, style }: any) => {
   return (
-    <TouchableOpacity style={[styles.searchTile, style]} onPress={()=>router.push('/(screens)/bookdetails')}>
+    <TouchableOpacity style={[styles.searchTile, style]} onPress={()=>router.navigate({pathname:'/(screens)/bookdetails',params:item})}>
       <Image source={{uri:item.cover}} style={styles.img}/>
       <View style={styles.tileContent}>
         <CustomText fontFamily='Medium'>{item.bookName}</CustomText>

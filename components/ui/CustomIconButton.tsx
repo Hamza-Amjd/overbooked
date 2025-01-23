@@ -8,11 +8,12 @@ import {
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { IconProps } from "@expo/vector-icons/build/createIconSet";
 
 type customIconButtonProps = {
   onPress: () => void;
-  iconName?:string;
-  size?:number;
+  iconName?: keyof typeof Ionicons.glyphMap;
+  size?: number;
 };
 
 const CustomIconButton = ({

@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { fetchAllBooks } from "@/services/api/bookService";
+import { fetchAllBooks, fetchMyBooks } from "@/services/api/bookService";
 import { useBookStore } from "@/services/bookStore";
 import CustomText from "@/components/ui/CustomText";
 import HomeHeader from "@/components/home/HomeHeader";
@@ -20,17 +20,19 @@ import CustomSafeAreaView from "@/components/ui/CustomSafeAreaView";
 import { screenWidth } from "@/constants/Sizes";
 import { Colors } from "@/constants/Colors";
 import MyBooksCarousel from "@/components/home/MyBooksCarousel";
+import { useAuthStore } from "@/services/authStore";
 
 const home = () => {
   const ListRef = useRef<any>();
   const { books, myBooks } = useBookStore();
+  const { user } = useAuthStore();
+
   const [data, setData] = useState(books);
   const [newBooks, setNewBooks] = useState<any>([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true);
-    fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))}).finally(() => setLoading(false));
+    fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))});
+    fetchMyBooks(user?._id)
   }, []);
 
   const handleCategoryChange = (category: any) => {
@@ -73,13 +75,9 @@ const home = () => {
           keyExtractor={(item) => item._id}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
-              {loading ? (
-                <ActivityIndicator size={"large"} />
-              ) : (
                 <CustomText fontFamily="Medium" variant="h6">
                   Nothing Found
                 </CustomText>
-              )}
             </View>
           )}
           contentContainerStyle={styles.list}

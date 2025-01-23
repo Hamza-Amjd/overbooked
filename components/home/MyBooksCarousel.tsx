@@ -8,6 +8,7 @@ import {
 import { useBookStore } from "@/services/bookStore";
 import MyBookCard from "./MyBookCard";
 import { screenWidth } from "@/constants/Sizes";
+import { Colors } from "@/constants/Colors";
 
   
   const Collections = () => {
@@ -42,7 +43,7 @@ import { screenWidth } from "@/constants/Sizes";
       return {
         width: withTiming(isActive ? 12 : 8, { duration: 200, easing: Easing.linear }),
         height: withTiming(isActive ? 12 : 8, { duration: 200, easing: Easing.linear }),
-        backgroundColor: isActive ? 'white' : 'gray',
+        backgroundColor: isActive ? Colors.primary : 'gray',
       };
     });
   
