@@ -5,6 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import CustomText from "../ui/CustomText";
 import { useAuthStore } from "@/services/authStore";
+import NotificationButton from "./NotificationButton";
 
 const HomeHeader = () => {
   const {user}=useAuthStore()
@@ -13,9 +14,7 @@ const HomeHeader = () => {
       <TouchableOpacity onPress={()=>router.push('/(screens)/mybooks')} >
       <Feather name="book-open" size={RFValue(20)}  color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>router.push('/(screens)/notifications')}>
-        <Feather name="bell" size={RFValue(22)} />
-      </TouchableOpacity>
+      <NotificationButton/>
     </View>
   );
 };

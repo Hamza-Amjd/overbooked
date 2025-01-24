@@ -12,12 +12,13 @@ import { router } from "expo-router";
 import { useAuthStore } from "@/services/authStore";
 import CustomText from "@/components/ui/CustomText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import { useBookStore } from "@/services/bookStore";
 import useWishListStore from "@/services/wishlistStore";
 import { useNotificationStore } from "@/services/notificationStore";
+import NotificationButton from "@/components/home/NotificationButton";
 
 const profile = () => {
   const { user, logout } = useAuthStore();
@@ -51,19 +52,24 @@ const profile = () => {
     {
       name: "Wishlist",
       action: () => router.push("/(screens)/wishlist"),
-      icon: "bookmark",
+      icon: <Ionicons name={"bookmark"} size={24} color="#36382E" />,
     },
     {
       name: "Notifications",
       action: () => router.push("/(screens)/notifications"),
-      icon: "notifications",
+      icon: <NotificationButton icon={<Ionicons name={"notifications"} size={24} color="#36382E"/>}/> ,
+    },
+    {
+      name: "Request for new book",
+      action: () => router.push("/(screens)/requestbook"),
+      icon: <MaterialCommunityIcons name={"book-plus"} size={24} color="#36382E" />,
     },
     {
       name: "Privacy Policy",
       action: async() => await WebBrowser.openBrowserAsync("https://www.google.com"),
-      icon: "shield-checkmark",
+      icon: <Ionicons name={"shield-checkmark"} size={24} color="#36382E" />,
     },
-    { name: "Logout", action: handleLogout, icon: "log-out" },
+    { name: "Logout", action: handleLogout, icon: <Ionicons name={"log-out"} size={24} color="#36382E" /> },
     // Add more buttons here as needed
   ];
   return (
@@ -90,7 +96,7 @@ const profile = () => {
           onPress={button.action}
           style={styles.button}
         >
-          <Ionicons name={button.icon as any} size={24} color="#36382E" />
+          {button.icon}
           <CustomText fontFamily="Medium" variant="h6">
             {button.name}
           </CustomText>
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 5,
     paddingTop: 50,
-    paddingBottom: 20,
+    paddingBottom: 80,
   },
   image: {
     height: 100,

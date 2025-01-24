@@ -14,9 +14,7 @@ const mybooks = () => {
   const [refreshing, setRefreshing] = useState(false)
   const {user}=useAuthStore()
   const { myBooks } = useBookStore();
-  useEffect(() => {
-    fetchMyBooks()
-  }, [])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Header title="My Books" />
@@ -26,7 +24,7 @@ const mybooks = () => {
         <FlatList
           data={myBooks}
           showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetchMyBooks()} />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetchMyBooks(user?._id)} />}
           renderItem={({ item }) => <MyBookCard item={item} style={{backgroundColor:"#F5F5F5"}}/>}
           keyExtractor={(item) => item._id}
           contentContainerStyle={{ padding: 10,rowGap: 5 }}

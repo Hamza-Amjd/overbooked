@@ -2,11 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, Animated, StyleSheet, TextInputProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { Colors } from '@/utils/Constants';
+import { Colors } from '@/constants/Colors';
 
 interface CustomInputProps extends TextInputProps {
     label: string;
     value: string;
+    numberOfLines?: number;
     onChangeText: (text: string) => void;
     validationFunction?: any;
     showValidationIcon?: boolean;
@@ -17,6 +18,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     value,
     onChangeText,
     onBlur,
+    numberOfLines=1,
     validationFunction = null,
     showValidationIcon = false,
     placeholder,
@@ -69,7 +71,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container,numberOfLines>1&&{height:40*numberOfLines}]}>
             <Animated.Text
                 style={[
                     styles.label,
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
         pointerEvents: 'none',
         color: '#666',
         zIndex: 11,
-        backgroundColor: Colors.secondary,
+        backgroundColor: '#fff',
     },
     inputWrapper: {
         flexDirection: 'row',
@@ -137,7 +139,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: RFValue(10),
         height: 50,
         fontSize: RFValue(14),
-        color: '#fff',
     },
     icon: {
         marginLeft: 10,

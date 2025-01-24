@@ -1,8 +1,6 @@
 import axios from "axios";
 import { BASE_URL} from "../config";
 import { useBookStore } from "../bookStore";
-import { useAuthStore } from "../authStore";
-const {user}=useAuthStore.getState();
 
 export const fetchAllBooks =async () => {
     try {
@@ -15,13 +13,21 @@ export const fetchAllBooks =async () => {
     }
   };
 
-  export const fetchMyBooks =async () => {
+  export const fetchMyBooks =async (userId:any) => {
     try {
-      const res=await axios.get(`${BASE_URL}/library/issued-books/${user?._id}`)
+      const res=await axios.get(`${BASE_URL}/library/issued-books/${userId}`)
       const {setMyBooks}=useBookStore.getState();
       setMyBooks(res.data)
       return res.data;
     } catch (error) {
       console.log("fetching books error:", error);
+    }
+  };
+
+  export const requestBookService =async (userId:any,userName:any, bookName:string, author:string,description:string) => {
+    try {
+      await axios.post(`${BASE_URL}/library/request-new-book`,{userId,userName,bookName,author,description})
+    } catch (error) {
+      console.log("request book error:", error);
     }
   };

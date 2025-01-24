@@ -10,10 +10,12 @@ import { useBookStore } from "@/services/bookStore";
 
 const width=screenWidth-52
 const MyBookCard = ({item,style}:any) => {
+  const {myBooksProgress}=useBookStore();
+
   const [progress, setProgress] = React.useState(0);
   const [currPage, setCurrPage] = React.useState(0);
+  
   const animatedWidth = useRef(new Animated.Value(0)).current;
-  const {myBooksProgress}=useBookStore()
   
   useFocusEffect(() => {
     const bookprogress=myBooksProgress.find((b: any) => b.id === item.bookName && b)

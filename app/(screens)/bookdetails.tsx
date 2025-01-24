@@ -39,7 +39,7 @@ const bookdetails = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userID: user?.id
+            userID: user?._id
           })
         });
   
@@ -108,8 +108,8 @@ const bookdetails = () => {
       <CustomText style={{textAlign:'justify'}}>{item.description??"This gripping tale follows a group of strangers who find themselves trapped together in an isolated location after a mysterious event. As tensions rise and suspicions grow, they must navigate their own personal demons while trying to unravel the enigma of what brought them there. With each chapter, the story unravels a web of secrets, lies, and psychological twists, pushing the characters to their limits. Themes of survival, trust, and betrayal are explored, leaving readers questioning the nature of the human spirit."}</CustomText>
     </Animated.View>
     <View style={styles.container}>
-      {isMyBook && <CustomText style={{color:Colors.success,textAlign:'center'}}>You Already own this book tap to read</CustomText>}
-      <CustomButton icon={"book"}  title={isMyBook?"Read Book":"Request Book"} onPress={()=>{isMyBook?router.navigate({pathname:"/(screens)/readbook",params:item}):handleRequestBook()}} />
+      {<CustomText style={{color:Colors.success,textAlign:'center'}}>{isMyBook ? "You Already own this book tap to read":item.available==0 ? "No books available right now":""}</CustomText>}
+      <CustomButton icon={"book"} isValid={item.available>0} title={isMyBook?"Read Book":"Request Book"} onPress={()=>{isMyBook?router.navigate({pathname:"/(screens)/readbook",params:item}):handleRequestBook()}} />
     </View>
     </ParallaxScrollView>
     </View>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    top:-140
+    top:-150
   },
   header: {
     position:'absolute',top:0,right:0,left:0,flexDirection:'row',padding:12,paddingTop:45,backgroundColor:'rgba(0,0,0,0.3)',zIndex:10,alignItems:'center',justifyContent:'space-between'

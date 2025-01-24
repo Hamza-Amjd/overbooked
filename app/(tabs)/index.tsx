@@ -21,6 +21,7 @@ import { screenWidth } from "@/constants/Sizes";
 import { Colors } from "@/constants/Colors";
 import MyBooksCarousel from "@/components/home/MyBooksCarousel";
 import { useAuthStore } from "@/services/authStore";
+import { fetchUserNotifications } from "@/services/api/notificationService";
 
 const home = () => {
   const ListRef = useRef<any>();
@@ -30,10 +31,16 @@ const home = () => {
   const [data, setData] = useState(books);
   const [newBooks, setNewBooks] = useState<any>([]);
   const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
-    fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))});
-    fetchMyBooks(user?._id)
+    fetchData();
   }, []);
+
+  const fetchData =() => {
+    fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))});
+    fetchMyBooks(user?._id);
+    fetchUserNotifications();
+  }
 
   const handleCategoryChange = (category: any) => {
     ListRef?.current?.scrollToOffset({
@@ -53,7 +60,7 @@ const home = () => {
         style={{width: '100%'}}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchAllBooks} />
+          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
         }
       >
         {<View style={styles.padding}>

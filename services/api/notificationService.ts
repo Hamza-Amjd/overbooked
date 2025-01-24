@@ -13,3 +13,13 @@ export const fetchUserNotifications =async () => {
       console.log("fetching notifications error:", error);
     }
   };
+
+  export const clearUserNotifications =async () => {
+    const {user} = useAuthStore.getState();
+      try {
+        await axios.post(`${BASE_URL}/notifications/${user?._id}/clear`)
+        fetchUserNotifications()
+      } catch (error) {
+        console.log("clear notifications error:", error);
+      }
+    };
