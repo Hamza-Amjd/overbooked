@@ -1,12 +1,13 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import CustomText from '../ui/CustomText'
 
 const EmptyList = () => {
+ const height= Dimensions.get('screen').height*0.3
   return (
     <View
           style={{
-            flex: 1,
+            paddingTop:height,
             justifyContent: "center",
             alignItems: "center",
             gap: 10,

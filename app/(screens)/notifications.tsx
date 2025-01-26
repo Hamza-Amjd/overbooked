@@ -1,5 +1,6 @@
 import {
   Alert,
+  Dimensions,
   RefreshControl,
   SafeAreaView,
   StatusBar,
@@ -46,7 +47,12 @@ const Page = () => {
 
   const renderItem = ({ item }: any) => {
     return (
-      <View style={[styles.notificationContainer,{backgroundColor:item.read?"#f4f4f4":Colors.primaryOpacity} ]}>
+      <View
+        style={[
+          styles.notificationContainer,
+          { backgroundColor: item.read ? "#f4f4f4" : Colors.primaryOpacity },
+        ]}
+      >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <CustomText variant="h6" fontFamily="Medium">
             {item.type.replace("_", " ")}
@@ -64,8 +70,11 @@ const Page = () => {
             size={RFValue(14)}
             color="#707070"
           />
-          <CustomText style={{ color:'#707070',lineHeight:19 }}>
-            {"At "+new Date(item.createdAt).toLocaleTimeString()+" on "+new Date(item.createdAt).toDateString()}
+          <CustomText style={{ color: "#707070", lineHeight: 19 }}>
+            {"At " +
+              new Date(item.createdAt).toLocaleTimeString() +
+              " on " +
+              new Date(item.createdAt).toDateString()}
           </CustomText>
         </View>
       </View>
@@ -82,8 +91,10 @@ const Page = () => {
           </TouchableOpacity>
         }
       />
-      {!notifications && (
-        <View style={styles.emptyContainer}>
+        <FlatList
+          data={notifications}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<View style={styles.emptyContainer}>
           <Ionicons
             name="notifications-circle-sharp"
             size={RFValue(70)}
@@ -92,21 +103,17 @@ const Page = () => {
           <CustomText variant="h6" style={{ textAlign: "center" }}>
             No notifications found
           </CustomText>
-        </View>
-      )}
-      <FlatList
-        data={notifications}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => fetchUserNotifications(user?._id)}
-          />
-        }
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={{ padding: 10, rowGap: 5 }}
-      />
+        </View>}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => fetchUserNotifications(user?._id)}
+            />
+          }
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={{ padding: 10, rowGap: 5 }}
+        />
     </SafeAreaView>
   );
 };
@@ -120,7 +127,7 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
   },
   emptyContainer: {
-    flex: 1,
+    height:Dimensions.get("screen").height*0.8,
     justifyContent: "center",
     alignItems: "center",
     gap: 20,
