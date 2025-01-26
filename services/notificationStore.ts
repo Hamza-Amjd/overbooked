@@ -13,7 +13,7 @@ export const useNotificationStore = create<notificationState>()(
   persist(
     (set) => ({
       notifications: [], // Initialize with an empty array
-      unreadCount: 2, // Initialize with 0
+      unreadCount: 0, // Initialize with 0
       setNotifications: (notifications) => set({ notifications,unreadCount: notifications.filter((notification:any) => !notification.read).length  }), // Method to set the notifications list
       clearNotifications: () => set({ notifications: [],unreadCount:0 }), // Clear the notifications list
     }),

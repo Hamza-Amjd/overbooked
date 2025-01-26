@@ -1,4 +1,4 @@
-import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, KeyboardAvoidingView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import CustomSafeAreaView from "@/components/ui/CustomSafeAreaView";
 import Header from "@/components/ui/Header";
@@ -38,27 +38,12 @@ const requestbook = () => {
 
   return (
     <CustomSafeAreaView style={styles.container}>
-      <Header title="Request book" />
       <KeyboardAvoidingView behavior="position">
-      <View style={styles.logo}>
-        <CustomText fontFamily="Bold" variant="h5" style={styles.logotext}>
-          Request
+      <Header title="Request book" />
+        <Image source={require('@/assets/images/book.jpg')} style={styles.logo}/>
+      <CustomText fontFamily="Medium" variant="h5" style={styles.logotext}>
+          Request any book and we'll make it available for you
         </CustomText>
-        <CustomText fontFamily="Bold" variant="h5" style={styles.logotext}>
-          any book
-        </CustomText>
-        <CustomText fontFamily="Bold" variant="h5" style={styles.logotext}>
-          and we'll make
-        </CustomText>
-
-        <CustomText fontFamily="Bold" variant="h5" style={styles.logotext}>
-          it available
-        </CustomText>
-        <CustomText fontFamily="Bold" variant="h5" style={styles.logotext}>
-          {" "}
-          for you
-        </CustomText>
-      </View>
       <CustomInput
         onChangeText={(text) => setName(text)}
         label="Book Name"
@@ -91,15 +76,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   logo: {
-    backgroundColor: Colors.primaryOpacity,
     width: 220,
     height: 220,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "100%",
-    marginBottom: 20,
+    borderRadius: 200,
     alignSelf: "center",
-    marginTop: 90,
+    marginBottom: 20,
+    marginTop: 60,
   },
-  logotext: { textAlign: "center", color: "white" },
+  logotext: { textAlign: "center",paddingBottom:20},
 });

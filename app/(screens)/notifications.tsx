@@ -19,10 +19,12 @@ import {
 import { useNotificationStore } from "@/services/notificationStore";
 import { FlatList } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
+import { useAuthStore } from "@/services/authStore";
 
 const Page = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { notifications } = useNotificationStore();
+  const { user } = useAuthStore();
 
   const handleClearNotifications = () => {
     Alert.alert(
@@ -32,7 +34,7 @@ const Page = () => {
         {
           text: "Yes",
           onPress: () => {
-            clearUserNotifications();
+            clearUserNotifications(user?._id);
           },
         },
         {
@@ -44,13 +46,13 @@ const Page = () => {
 
   const renderItem = ({ item }: any) => {
     return (
-      <View style={[styles.notificationContainer,{backgroundColor:item.read?"#fff":"#e7e7e7"} ]}>
+      <View style={[styles.notificationContainer,{backgroundColor:item.read?"#f4f4f4":Colors.primaryOpacity} ]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <CustomText variant="h6" fontFamily="Medium">
             {item.type.replace("_", " ")}
           </CustomText>
           {!item.read && (
-            <CustomText style={{ color: Colors.primary, right: 30 }}>
+            <CustomText style={{ color: Colors.primary, right: 10 }}>
               New
             </CustomText>
           )}
@@ -59,11 +61,11 @@ const Page = () => {
         <View style={styles.iconContainer}>
           <Ionicons
             name="calendar-outline"
-            size={RFValue(20)}
+            size={RFValue(14)}
             color="#707070"
           />
-          <CustomText style={{ marginLeft: 5 }}>
-            {new Date(item.createdAt).toLocaleString()}
+          <CustomText style={{ color:'#707070',lineHeight:19 }}>
+            {"At "+new Date(item.createdAt).toLocaleTimeString()+" on "+new Date(item.createdAt).toDateString()}
           </CustomText>
         </View>
       </View>
@@ -98,7 +100,7 @@ const Page = () => {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={() => fetchUserNotifications()}
+            onRefresh={() => fetchUserNotifications(user?._id)}
           />
         }
         renderItem={renderItem}
@@ -128,15 +130,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
   },
   iconContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 5,
+    gap: 2,
   },
 });

@@ -39,7 +39,7 @@ const home = () => {
   const fetchData =() => {
     fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))});
     fetchMyBooks(user?._id);
-    fetchUserNotifications();
+    fetchUserNotifications(user?._id);
   }
 
   const handleCategoryChange = (category: any) => {

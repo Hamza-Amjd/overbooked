@@ -15,7 +15,7 @@
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#fe9a07"
+        "backgroundColor": "#fbfbfb"
       },
       "package": "com.hamzaamjd.overbooked"
     },
