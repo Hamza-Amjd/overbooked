@@ -31,3 +31,12 @@ export const fetchAllBooks =async () => {
       console.log("request book error:", error);
     }
   };
+  
+  export const returnBookService =async (userID:any,bookID:any) => {
+    try {
+      await axios.post(`${BASE_URL}/library/returnBook`,{userID,bookID})
+      fetchMyBooks(userID)
+    } catch (error) {
+      console.log("request book error:", error);
+    }
+  };

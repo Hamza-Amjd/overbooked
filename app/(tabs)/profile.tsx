@@ -60,6 +60,11 @@ const profile = () => {
       icon: <NotificationButton icon={<Ionicons name={"notifications"} size={24} color="#36382E"/>}/> ,
     },
     {
+      name: "Chat with AI",
+      action: () => router.push("/(screens)/chat"),
+      icon: <Image source={require("@/assets/images/chat.png")} style={{width:24,height:18}}/>,
+    },
+    {
       name: "Request for new book",
       action: () => router.push("/(screens)/requestbook"),
       icon: <MaterialCommunityIcons name={"book-plus"} size={24} color="#36382E" />,
@@ -129,6 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f4f4",
     borderRadius: 10,
     flexDirection: "row",
+    alignItems: "center",
     padding: 10,
     gap: 10,
     marginBottom: 10,

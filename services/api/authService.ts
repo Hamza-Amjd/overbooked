@@ -28,7 +28,7 @@ GoogleSignin.configure({
       setUser(user);
       router.replace("/(tabs)");
     } catch (error: any) {
-      console.log(error.response.data);
+      console.log(error);
     }
   }
 

@@ -9,6 +9,8 @@ import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { IconProps } from "@expo/vector-icons/build/createIconSet";
+import * as Haptics from "expo-haptics"
+
 
 type customIconButtonProps = {
   onPress: () => void;
@@ -23,7 +25,7 @@ const CustomIconButton = ({
 }: customIconButtonProps) => {
   return (
     <TouchableOpacity
-      onPress={onPress}
+    onPress={()=>{Haptics.impactAsync();onPress()}}
     >
       <Ionicons name={iconName as any} size={size?size:25} color={'#fff'}/>
     </TouchableOpacity>

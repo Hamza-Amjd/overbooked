@@ -11,6 +11,7 @@ const _layout = () => {
         <Stack.Screen name="readbook" />
         <Stack.Screen name="bookdetails" />
         <Stack.Screen name="requestbook" />
+        <Stack.Screen name="chat" />
       </Stack>
   )
 }

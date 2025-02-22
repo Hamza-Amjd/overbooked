@@ -9,13 +9,16 @@ import {
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics"
+
 
 type customButtonProps = TouchableOpacityProps & {
   onPress: () => void;
   isValid?: boolean;
   isLoading?: boolean;
   title: string;
-  icon?:any;
+  icon?: keyof typeof Ionicons.glyphMap;
+  style?:any;
   height?: number;
 };
 
@@ -26,16 +29,18 @@ const CustomButton = ({
   title,
   icon,
   height,
+  style,
   ...rest
 }: customButtonProps) => {
   return (
     <TouchableOpacity
       disabled={!isValid}
-      onPress={onPress}
+      onPress={()=>{Haptics.impactAsync();onPress()}}
       style={[
         styles.registerBtn,
         isValid && { backgroundColor: Colors.primary },
         { height: height?height:45 },
+        style
       ]}
       {...rest}
     >
