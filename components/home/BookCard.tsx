@@ -11,7 +11,6 @@ import CustomText from "../ui/CustomText";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { RFValue } from "react-native-responsive-fontsize";
-import useCartStore from "@/services/cartStore";
 import { router } from "expo-router";
 import BookmarkButton from "../books/BookmarkButton";
 
@@ -25,7 +24,7 @@ const BookCard = ({ item,style }: any) => {
       <BookmarkButton item={item}/>
       </View>
       <View style={styles.bookImage}>
-        <Image source={{ uri: item.cover }} style={styles.bookImage} />
+        <Image source={{ uri: item.cover }} style={styles.bookImage} onError={(err)=>console.log(err)}/>
         <View style={styles.ratingContainer}>
           <AntDesign name="star" color={Colors.primary} size={RFValue(15)} />
           <CustomText fontFamily="Medium">{parseInt(item.rating).toFixed(1)}</CustomText>

@@ -1,12 +1,9 @@
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   FlatList,
-  StatusBar,
   RefreshControl,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { fetchAllBooks, fetchMyBooks } from "@/services/api/bookService";
@@ -15,13 +12,14 @@ import CustomText from "@/components/ui/CustomText";
 import HomeHeader from "@/components/home/HomeHeader";
 import BookCard from "@/components/home/BookCard";
 import Categories from "@/components/home/Categories";
-import MyBookCard from "@/components/home/MyBookCard";
 import CustomSafeAreaView from "@/components/ui/CustomSafeAreaView";
 import { screenWidth } from "@/constants/Sizes";
-import { Colors } from "@/constants/Colors";
 import MyBooksCarousel from "@/components/home/MyBooksCarousel";
 import { useAuthStore } from "@/services/authStore";
 import { fetchUserNotifications } from "@/services/api/notificationService";
+import { FadeInUp } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
+import { useFocusEffect } from '@react-navigation/native';
 
 const home = () => {
   const ListRef = useRef<any>();
@@ -31,15 +29,24 @@ const home = () => {
   const [data, setData] = useState(books);
   const [newBooks, setNewBooks] = useState<any>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      setShouldAnimate(false);
+      setTimeout(() => setShouldAnimate(true), 50);
+    }, [])
+  );
+
   const fetchData =() => {
     fetchAllBooks().then((res)=>{setData(res);setNewBooks(res.slice(4,res.length))});
     fetchMyBooks(user?._id);
     fetchUserNotifications(user?._id);
+    console.log('fetching data',myBooks)
   }
 
   const handleCategoryChange = (category: any) => {
@@ -78,7 +85,13 @@ const home = () => {
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <BookCard item={item} />}
+          renderItem={({ item, index }) => (
+            <Animated.View
+              entering={shouldAnimate ? FadeInUp.delay(index * 100).springify() : undefined}
+            >
+              <BookCard item={item} />
+            </Animated.View>
+          )}
           keyExtractor={(item) => item._id}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
@@ -92,13 +105,19 @@ const home = () => {
         
         <CustomText fontFamily="Bold" variant="h1" style={styles.padding}>For You</CustomText>
         <FlatList
-        scrollEnabled={false}
-        data={newBooks}
-        renderItem={({ item }) => <BookCard item={item} style={{marginHorizontal:15}}/>}
-        keyExtractor={(item) => item._id}
-        numColumns={2}
-        contentContainerStyle={styles.foryoulist}
-      />
+          scrollEnabled={false}
+          data={newBooks}
+          renderItem={({ item, index }) => (
+            <Animated.View
+              entering={shouldAnimate ? FadeInUp.delay(index * 100).springify() : undefined}
+            >
+              <BookCard item={item} style={{marginHorizontal:15}}/>
+            </Animated.View>
+          )}
+          keyExtractor={(item) => item._id}
+          numColumns={2}
+          contentContainerStyle={styles.foryoulist}
+        />
       </ScrollView>
     </CustomSafeAreaView>
   );
